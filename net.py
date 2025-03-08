@@ -61,7 +61,7 @@ def softmax(input):
     return out / np.sum(out, axis=-1, keepdims=True)
 
 
-def CELossWithLogits(y, t):
+def cross_entropy_loss_with_logits(y, t):
     y = softmax(y)
     y = y[np.arange(y.shape[0]), t.flatten()]
     y = np.clip(y, 1e-15, 1 - 1e-15)
@@ -69,7 +69,7 @@ def CELossWithLogits(y, t):
     return loss
 
 
-def dCELoss(y, t):
+def derivative_of_cross_entropy_loss_wrt_logits(y, t):
     y = softmax(y)
     dy = y.copy()
     dy[np.arange(y.shape[0]), t.flatten()] -= 1
@@ -161,7 +161,7 @@ def train():
             y = x
             for k in range(len(model_layers)):
                 y = model_layers[k].forward(y)
-            e = CELossWithLogits(y, t)
+            e = cross_entropy_loss_with_logits(y, t)
             labels = np.argmax(y, axis=-1)
             test_loss += e
             num_correct += len(np.where(labels == t.squeeze())[0])
@@ -187,10 +187,10 @@ def train():
             for k in range(len(model_layers)):
                 y = model_layers[k].forward(y)
 
-            e = CELossWithLogits(y, t)
+            e = cross_entropy_loss_with_logits(y, t)
             train_loss += e
             e /= batch_size
-            dy = dCELoss(y, t) / batch_size
+            dy = derivative_of_cross_entropy_loss_wrt_logits(y, t) / batch_size
 
             dx = dy
             for k in range(len(layers_reversed)):
