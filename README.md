@@ -20,9 +20,11 @@ This project includes:
 To use this project, you need to have Python and NumPy installed. You also need matplotlib for visualization.
 
 ## Training and Testing on MNIST Dataset
+Sample test results:
 <img src="figure_1.png" width="400" height="300">
+
+Training and testing losses with accuracy on the validation dataset:
 <img src="loss_accuracy_graph.png" width="400" height="300">
+
+Training logs:
 <img src="logs.png" width="800" height="200">
-
-
-
